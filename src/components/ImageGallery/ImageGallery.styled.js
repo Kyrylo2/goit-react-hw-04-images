@@ -12,4 +12,5 @@ export const ImageGalleryUl = styled.ul`
   margin-left: auto;
   margin-right: auto;
   flex: 1;
+  height: calc(100% - 200px);
 `;

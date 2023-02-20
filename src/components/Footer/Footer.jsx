@@ -9,10 +9,10 @@ const Footer = () => {
       Created by Kyrylo Savchenko as part of the GoIT course. Let's keep in
       touch!
       <div>
-        <a href="url">
+        <a href="https://github.com/Kyrylo2">
           <GitHubIcon />
         </a>
-        <a href="url">
+        <a href="https://www.linkedin.com/in/savchenko-kyrylo/">
           <LinkedInIcon />
         </a>
       </div>

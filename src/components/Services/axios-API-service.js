@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// import { toast } from 'react-toastify';
 const BASE_URL = `https://pixabay.com/api/?`;
 
 async function imageAPI(inputValue, currentPage, picturesPerPage, updateState) {
@@ -18,13 +17,16 @@ async function imageAPI(inputValue, currentPage, picturesPerPage, updateState) {
     },
   };
 
-  const { data, status } = await axios.get(BASE_URL, axiosOptions);
+  const {
+    data: { hits, totalHits },
+    status,
+  } = await axios.get(BASE_URL, axiosOptions);
 
-  if (status !== 200 || data.totalHits === 0) {
+  if (status !== 200 || totalHits === 0) {
     throw new Error(
       `Sorry, there are no pictures for the "${inputValue}". Please try again.`
     );
-  } else return data;
+  } else return { hits, totalHits };
 }
 
 export default imageAPI;

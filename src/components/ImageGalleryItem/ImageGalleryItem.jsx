@@ -16,6 +16,7 @@ const ImageGallery = ({
         src={webformatURL}
         alt={tags}
         onClick={() => {
+          console.log('Clicking image item');
           return onImageClick(largeImageURL, tags);
         }}
         loading="lazy"

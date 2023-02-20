@@ -10,4 +10,5 @@ export const FooterDiv = styled.div`
   display: flex;
   position: relative;
   bottom: 0;
+  margin-top: auto;
 `;

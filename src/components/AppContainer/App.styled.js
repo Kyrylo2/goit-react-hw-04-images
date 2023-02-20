@@ -8,8 +8,12 @@ export const AppDiv = styled.div`
   min-height: 100vh;
   flex-direction: column; */
 
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
-  padding-bottom: 24px;
+  padding-bottom: 24px; */
+
+  display: flex;
+  /* gap: 16px; */
+  flex-direction: column;
 `;

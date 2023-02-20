@@ -16,88 +16,52 @@ export default function App() {
   const [pictures, setPictures] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [spinner, setSpinner] = useState(false);
-  // const [totalPages, setTotalPages] = useState(0);
   const [loadingMoreButtonState, setLoadingMoreButtonState] = useState(false);
   const [loadingMoreButtonVisibility, setLoadingMoreButtonVisibility] =
     useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [fullImage, setFullImage] = useState(null);
-  const [altTags, setAltTags] = useState(null);
+
+  const [fullImage, setFullImage] = useState('');
+  const [altTags, setAltTags] = useState('');
 
   const picturesPerPage = useRef(12);
-  // const firstRander = useRef(true);
-
-  // useEffect (async () => {
-  //   if(firstRander.current) {
-  //     return
-  //   }
-
-  //   try {
-  //     setSpinner(true)
-
-  //   const data = await getPictures();
-
-  //       const { hits, totalHits } = data;
-
-  //       setPictures(prevState => ([...prevState, ...hits]));
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-
-  // }, [inputValue, currentPage])
 
   useEffect(() => {
-    console.log('useEffect called with App');
-    console.log('inputValue called with App: ', inputValue);
-    const fetchData = async () => {
-      try {
-        setSpinner(true);
-        const data = await getPictures();
-        console.log(data);
-        const { hits, totalHits } = data;
-        setPictures(prevPictures => [...prevPictures, ...hits]);
-
-        if (currentPage === 1) {
-          toast.success(`Wow! We found ${totalHits} pictures`);
-          window.scroll(0, 0);
-        }
-
-        const totalPages = Math.ceil(totalHits / picturesPerPage.current);
-        console.log('totalPages', totalPages);
-
-        console.log(
-          'totalPages > 1 || currentPage < totalPages',
-          totalPages > 1 || currentPage < totalPages
-        );
-
-        if (totalPages > 1 || currentPage < totalPages) {
-          setLoadingMoreButtonVisibility(true);
-        }
-
-        if (currentPage >= totalPages) {
-          setLoadingMoreButtonVisibility(false);
-          toast.info(
-            `You have looked at all the countries in your query "${inputValue}". Please start your search from the beginning`
-          );
-        }
-      } catch (e) {
-        if (loadingMoreButtonVisibility === true) {
-          setLoadingMoreButtonVisibility(false);
-        }
-        toast.info(e.message);
-      } finally {
-        setSpinner(false);
-      }
-    };
-
     if (!inputValue) {
       return;
     }
 
-    fetchData();
+    setSpinner(true);
+
+    imageAPI(inputValue, currentPage, picturesPerPage)
+      .then(({ hits, totalHits }) => {
+        setLoadingMoreButtonVisibility(true);
+        setPictures(images => (images = [...images, ...hits]));
+
+        if (currentPage === 1) {
+          toast.success(`Hooray! We found ${totalHits} images`);
+          window.scroll(0, 0);
+        }
+
+        const countPages = Math.ceil(totalHits / picturesPerPage.current);
+
+        if (currentPage >= countPages) {
+          setLoadingMoreButtonVisibility(false);
+          toast.info(
+            `We're sorry, but you've reached the end of search "${inputValue}". Please start a new search`
+          );
+        }
+      })
+      .catch(() =>
+        toast.error(
+          `Sorry, there are no images "${inputValue}". Please try again.`
+        )
+      )
+      .finally(() => {
+        setSpinner(false);
+      });
   }, [inputValue, currentPage]);
 
-  const updateState = (inputValue = '') => {
+  const updateState = inputValue => {
     setInputValue(inputValue);
     setPictures([]);
     setCurrentPage(1);
@@ -113,58 +77,28 @@ export default function App() {
     }
   };
 
-  const getPictures = async () => {
-    setSpinner(true);
-    console.log(inputValue, currentPage, picturesPerPage);
-    try {
-      return await imageAPI(inputValue, currentPage, picturesPerPage);
-    } catch (e) {
-      throw new Error(e.message);
-    } finally {
-      setSpinner(false);
-    }
-  };
-
-  const handleLoadingMoreButton = async () => {
+  const handleLoadingMoreButton = () => {
     setLoadingMoreButtonState(true);
 
     setCurrentPage(prevState => prevState + 1);
 
-    await getPictures();
     setLoadingMoreButtonState(false);
   };
 
-  //------ modal methods --------------------------------
-  const toggleModal = () => {
-    setShowModal(prevState => !prevState);
-  };
-
-  useEffect(() => {
-    console.log('Далі тугл модал буде', fullImage, altTags);
-  }, [fullImage, altTags]);
-
-  const handleImagePicked = (fullImagePath, imageTags) => {
-    console.log('handleImagePicked', fullImagePath, imageTags);
+  const onSelectedImage = (fullImagePath, imageTags) => {
     setFullImage(fullImagePath);
     setAltTags(imageTags);
-    toggleModal();
   };
 
-  // const handleImagePicked = (fullImagePath, imageTags) => {
-  //   console.log('handleImagePicked', fullImagePath, imageTags);
-  //   setFullImage(fullImagePath);
-  //   setAltTags(imageTags);
-
-  //   console.log(fullImage, altTags);
-
-  //   toggleModal();
-  // };
+  const onCloseByEscape = () => setFullImage('');
 
   return (
     <AppContainer>
       <Searchbar onSubmit={handleFormSubmit} />
 
-      <ImageGallery pictures={pictures} onImageClick={handleImagePicked} />
+      {pictures.length > 0 && (
+        <ImageGallery pictures={pictures} onImageClick={onSelectedImage} />
+      )}
 
       {spinner && <Spinner isActive={spinner} />}
 
@@ -175,16 +109,15 @@ export default function App() {
         />
       )}
 
-      {showModal && (
+      {fullImage && (
         <Modal
           activeImage={fullImage}
           activeTags={altTags}
-          onClose={toggleModal}
+          onClose={onCloseByEscape}
         />
       )}
       <ToastContainer theme="dark" newestOnTop />
       <Footer />
     </AppContainer>
   );
-  // }
 }
