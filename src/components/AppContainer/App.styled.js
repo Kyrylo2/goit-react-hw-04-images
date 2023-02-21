@@ -14,6 +14,7 @@ export const AppDiv = styled.div`
   padding-bottom: 24px; */
 
   display: flex;
-  /* gap: 16px; */
+  gap: 16px;
   flex-direction: column;
+  min-height: 100vh;
 `;
