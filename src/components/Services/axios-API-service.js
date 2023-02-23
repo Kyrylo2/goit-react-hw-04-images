@@ -3,7 +3,6 @@ import axios from 'axios';
 const BASE_URL = `https://pixabay.com/api/?`;
 
 async function imageAPI(inputValue, currentPage, picturesPerPage, updateState) {
-  console.log('Image API', inputValue);
   const axiosOptions = {
     params: {
       key: '30549938-651b5d539a57bc16112485a48',

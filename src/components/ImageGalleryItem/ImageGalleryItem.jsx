@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   ImageGalleryItemLi,
   ImageGalleryItemImage,
@@ -15,14 +17,19 @@ const ImageGallery = ({
       <ImageGalleryItemImage
         src={webformatURL}
         alt={tags}
-        onClick={() => {
-          console.log('Clicking image item');
-          return onImageClick(largeImageURL, tags);
-        }}
+        onClick={() => onImageClick(largeImageURL, tags)}
         loading="lazy"
       />
     </ImageGalleryItemLi>
   );
+};
+
+ImageGallery.propTypes = {
+  id: PropTypes.number,
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  onImageClick: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

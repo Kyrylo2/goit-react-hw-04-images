@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 
 const override = {
@@ -16,6 +17,10 @@ const Spinner = ({ isActive }) => {
       loading={isActive}
     />
   );
+};
+
+Spinner.propTypes = {
+  isActive: PropTypes.bool.isRequired,
 };
 
 export default Spinner;
