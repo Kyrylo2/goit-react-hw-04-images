@@ -38,7 +38,7 @@ export default function App() {
         setPictures(images => (images = [...images, ...hits]));
 
         if (currentPage === 1) {
-          toast.success(`Hooray! We found ${totalHits} images`);
+          toast.success(`Wow! We found ${totalHits} pictures`);
           window.scroll(0, 0);
         }
 
@@ -47,7 +47,7 @@ export default function App() {
         if (currentPage >= countPages) {
           setLoadingMoreButtonVisibility(false);
           toast.info(
-            `We're sorry, but you've reached the end of search "${inputValue}". Please start a new search`
+            `You have looked at all the countries in your query "${inputValue}". Please start your search from the beginning`
           );
         }
       })

@@ -1,6 +1,7 @@
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 import { ImageGalleryUl } from './ImageGallery.styled.js';
-import { useMemo } from 'react';
 
 const ImageGallery = ({ pictures, onImageClick }) => {
   const imageGalleryItems = useMemo(() => {
@@ -18,6 +19,11 @@ const ImageGallery = ({ pictures, onImageClick }) => {
   }, [pictures, onImageClick]);
 
   return <ImageGalleryUl>{imageGalleryItems}</ImageGalleryUl>;
+};
+
+ImageGallery.propTypes = {
+  pictures: PropTypes.array,
+  onImageClick: PropTypes.func,
 };
 
 export default ImageGallery;

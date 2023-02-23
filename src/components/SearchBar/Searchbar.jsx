@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import {
   SearchbarContainer,
@@ -10,7 +11,7 @@ import {
 
 import searchIcon from '../../resources/search_icon.svg';
 
-export default function Searchbar({ onSubmit }) {
+function Searchbar({ onSubmit }) {
   const [input, setInput] = useState('');
 
   const handleStateChange = e => {
@@ -18,7 +19,6 @@ export default function Searchbar({ onSubmit }) {
   };
 
   const handleSubmit = e => {
-    console.log('Шукаю фотки');
     e.preventDefault();
 
     if (input.trim() === '') {
@@ -51,3 +51,9 @@ export default function Searchbar({ onSubmit }) {
     </SearchbarContainer>
   );
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
+
+export default Searchbar;

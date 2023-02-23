@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import { OverlayDiv, ModalImg } from './Modal.styled';
 
@@ -37,6 +38,12 @@ const Modal = ({ onClose, activeImage, activeTags }) => {
     </OverlayDiv>,
     modalRoot
   );
+};
+
+Modal.propTypes = {
+  onClose: PropTypes.func,
+  activeImage: PropTypes.string.isRequired,
+  activeTags: PropTypes.string.isRequired,
 };
 
 export default Modal;
